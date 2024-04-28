@@ -1,0 +1,43 @@
+
+library(RColorBrewer)
+library(ggplot2)
+
+sig<-read.table("../signature_assignment/MKPV_4pic_sample.txt",header = T,sep="\t")
+sig$Type<-factor(sig$Type,levels =c("A[C>A]A","A[C>A]C","A[C>A]G","A[C>A]T","C[C>A]A","C[C>A]C","C[C>A]G","C[C>A]T","G[C>A]A","G[C>A]C","G[C>A]G","G[C>A]T","T[C>A]A","T[C>A]C","T[C>A]G","T[C>A]T","A[C>G]A","A[C>G]C","A[C>G]G","A[C>G]T","C[C>G]A","C[C>G]C","C[C>G]G","C[C>G]T","G[C>G]A","G[C>G]C","G[C>G]G","G[C>G]T","T[C>G]A","T[C>G]C","T[C>G]G","T[C>G]T","A[C>T]A","A[C>T]C","A[C>T]G","A[C>T]T","C[C>T]A","C[C>T]C","C[C>T]G","C[C>T]T","G[C>T]A","G[C>T]C","G[C>T]G","G[C>T]T","T[C>T]A","T[C>T]C","T[C>T]G","T[C>T]T","A[T>A]A","A[T>A]C","A[T>A]G","A[T>A]T","C[T>A]A","C[T>A]C","C[T>A]G","C[T>A]T","G[T>A]A","G[T>A]C","G[T>A]G","G[T>A]T","T[T>A]A","T[T>A]C","T[T>A]G","T[T>A]T","A[T>C]A","A[T>C]C","A[T>C]G","A[T>C]T","C[T>C]A","C[T>C]C","C[T>C]G","C[T>C]T","G[T>C]A","G[T>C]C","G[T>C]G","G[T>C]T","T[T>C]A","T[T>C]C","T[T>C]G","T[T>C]T","A[T>G]A","A[T>G]C","A[T>G]G","A[T>G]T","C[T>G]A","C[T>G]C","C[T>G]G","C[T>G]T","G[T>G]A","G[T>G]C","G[T>G]G","G[T>G]T","T[T>G]A","T[T>G]C","T[T>G]G","T[T>G]T"))
+
+for (i in 2:5){
+  print(i)
+  tmp<-sig[,c(1,i)]
+  name = colnames(tmp)[2]
+  colnames(tmp)<-c("Type","Count")
+  rownames(tmp)<-tmp$Type
+  tmp<-tmp[c("A[C>A]A","A[C>A]C","A[C>A]G","A[C>A]T","C[C>A]A","C[C>A]C","C[C>A]G","C[C>A]T","G[C>A]A","G[C>A]C","G[C>A]G","G[C>A]T","T[C>A]A","T[C>A]C","T[C>A]G","T[C>A]T","A[C>G]A","A[C>G]C","A[C>G]G","A[C>G]T","C[C>G]A","C[C>G]C","C[C>G]G","C[C>G]T","G[C>G]A","G[C>G]C","G[C>G]G","G[C>G]T","T[C>G]A","T[C>G]C","T[C>G]G","T[C>G]T","A[C>T]A","A[C>T]C","A[C>T]G","A[C>T]T","C[C>T]A","C[C>T]C","C[C>T]G","C[C>T]T","G[C>T]A","G[C>T]C","G[C>T]G","G[C>T]T","T[C>T]A","T[C>T]C","T[C>T]G","T[C>T]T","A[T>A]A","A[T>A]C","A[T>A]G","A[T>A]T","C[T>A]A","C[T>A]C","C[T>A]G","C[T>A]T","G[T>A]A","G[T>A]C","G[T>A]G","G[T>A]T","T[T>A]A","T[T>A]C","T[T>A]G","T[T>A]T","A[T>C]A","A[T>C]C","A[T>C]G","A[T>C]T","C[T>C]A","C[T>C]C","C[T>C]G","C[T>C]T","G[T>C]A","G[T>C]C","G[T>C]G","G[T>C]T","T[T>C]A","T[T>C]C","T[T>C]G","T[T>C]T","A[T>G]A","A[T>G]C","A[T>G]G","A[T>G]T","C[T>G]A","C[T>G]C","C[T>G]G","C[T>G]T","G[T>G]A","G[T>G]C","G[T>G]G","G[T>G]T","T[T>G]A","T[T>G]C","T[T>G]G","T[T>G]T"),]
+  as.numeric(tmp$Count)
+  
+  
+  tmp$Type_2[1:16]<-"C>A"
+  tmp$Type_2[17:32]<-"C>G"
+  tmp$Type_2[33:48]<-"C>T"
+  tmp$Type_2[49:64]<-"T>A"
+  tmp$Type_2[64:80]<-"T>C"
+  tmp$Type_2[81:96]<-"T>G"
+  
+  x_cols <- rep( c("#02BCED", "#010101", "#E22926", "#CAC8C9", "#A0CE62", "#ECC6C5"),each=16)
+
+  pdf(paste("./pics/",name,".pdf"),width = 8.1,height = 2.7)
+  
+  p<-ggplot(data=tmp,aes(x=factor(Type),y=Count)) + 
+    geom_bar(aes(fill=Type_2),position="dodge", stat="identity",width = 0.8)+
+    scale_fill_manual(values = c("#02BCED", "#010101", 
+                                 "#E22926", "#CAC8C9", "#A0CE62", "#ECC6C5"))+
+    labs(x='',y='SNV Counts',title ="mkpv_branch4")+
+    theme(axis.line.x = element_line(size = 0.5),axis.line.y = element_line(size = 0.5), axis.title.y=element_text(size=8), axis.text.y = element_text(size=8,color="black"),
+          axis.text.x = element_text(colour=x_cols,angle = 90,vjust=0.5, size=6),
+          plot.title=element_text(size=8), panel.background = element_blank(),
+          legend.position = "none", axis.ticks.length=unit(0.1,'cm'),axis.ticks=element_line(size=0.5,color='black'))
+  
+  print(p)
+  dev.off()
+
+  
+}

@@ -1,0 +1,5 @@
+Sample Names	Total Mutations	Cosine Similarity	L1 Norm	L1_Norm_%	L2 Norm	L2_Norm_%	KL Divergence	Correlation
+Branch4	1771	0.973	608.49	34.359%	98.1	23.265%	0.16686	0.967
+Branch3	135	0.912	83.465	61.826%	14.552	41.11%	0.45727	0.895
+Barnch2	146	0.949	81.41	55.76%	11.447	31.675%	0.41	0.938
+Branch1	233	0.964	100.875	43.294%	14.876	27.191%	0.28527	0.957
